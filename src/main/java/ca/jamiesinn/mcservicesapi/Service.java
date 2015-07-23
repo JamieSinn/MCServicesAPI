@@ -1,4 +1,4 @@
-package ca.jamiesinn.mcservicesapi.services;
+package ca.jamiesinn.mcservicesapi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,12 +11,27 @@ import java.util.List;
 
 public class Service
 {
-    //private String status;
-    private List<String> status = new ArrayList<String>();
+    private List<String> status = new ArrayList<>();
 
+    /**
+     * New Service, parse JSON.
+     */
     public Service()
     {
         parseJSON();
+    }
+
+    /**
+     * Get an up/down of a given service
+     * @param type ServiceType to check
+     * @return boolean of up/down
+     */
+    public boolean getStatus(ServiceType type)
+    {
+        for(String s : status)
+            if(s.startsWith(type.getUrl()))
+                return true;
+        return false;
     }
 
     private void parseJSON()
@@ -24,19 +39,9 @@ public class Service
         try
         {
             JSONArray arr = readJsonFromUrl("http://status.mojang.com/check");
-            List<String> keys = new ArrayList<>();
-            keys.add("minecraft.net");
-            keys.add("session.minecraft.net");
-            keys.add("account.mojang.com");
-            keys.add("auth.mojang.com");
-            keys.add("skins.minecraft.net");
-            keys.add("authserver.mojang.com");
-            keys.add("sessionserver.mojang.com");
-            keys.add("api.mojang.com");
-            keys.add("textures.minecraft.net");
-            for (String s : keys)
+            for (ServiceType s : ServiceType.values())
             {
-                status.add(s + ": " + arr.getJSONObject(keys.indexOf(s)).getString(s));
+                status.add(s.getUrl() + ":" + arr.getJSONObject(s.getOrder()).getString(s.getUrl()));
             }
         }
         catch (Exception e)
@@ -56,7 +61,7 @@ public class Service
         return sb.toString();
     }
 
-    public JSONArray readJsonFromUrl(String url) throws IOException, JSONException
+    private JSONArray readJsonFromUrl(String url) throws IOException, JSONException
     {
         InputStream is = new URL(url).openStream();
         try
@@ -70,6 +75,10 @@ public class Service
         }
     }
 
+    /**
+     * Unused - But will return a List of all services and their status
+     * @return List of all services and their status.
+     */
     public List<String> getStatus()
     {
         List<String> result = new ArrayList<>();

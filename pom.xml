@@ -27,7 +27,7 @@
         </snapshotRepository>
     </distributionManagement>
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -56,6 +56,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
             </plugin>
         </plugins>
     </build>

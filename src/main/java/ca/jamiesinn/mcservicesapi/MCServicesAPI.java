@@ -1,15 +1,19 @@
 package ca.jamiesinn.mcservicesapi;
 
-import ca.jamiesinn.mcservicesapi.services.Service;
-
+/**
+ *
+ */
 public class MCServicesAPI
 {
-    public static void main(String[] args)
+    private static Service service = new Service();
+
+    /**
+     * Get the current status of a Minecraft/Mojang service
+     * @param type ServiceType to check for
+     * @return boolean of up/down
+     */
+    public static boolean getStatus(ServiceType type)
     {
-        Service service = new Service();
-        for(String s : service.getStatus())
-        {
-            System.out.println(s);
-        }
+        return service.getStatus(type);
     }
 }
