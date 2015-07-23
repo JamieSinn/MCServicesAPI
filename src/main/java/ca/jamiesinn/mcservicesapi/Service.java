@@ -73,6 +73,7 @@ public class Service
 
     /**
      * Unused - But will return a List of all services and their status
+     * @deprecated
      * @return List of all services and their status.
      */
     public List<String> getStatus()
